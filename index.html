@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mehndi Booking</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <div class="logo-area">
+
+    <div class="logo">
+        🌿 Mehndi Booking
+    </div>
+
+    <div class="logo-tagline">
+        Beautiful Hands, Beautiful Memories
+    </div>
+
+</div>
+
+<nav>
+
+    <a href="#home">Home</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#packages">Packages</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#booking">Contact</a>
+
+     <a href="https://www.instagram.com/anjalimehendi2025/"
+       target="_blank"
+       class="instagram-btn">
+        📷 Follow Us
+    </a>
+
+    <a href="#booking" class="header-book-btn">
+        📅 Book Now
+    </a>
+
+</nav>
+    </header>
+
+
+    <!-- HOME -->
+    <section id="home" class="hero">
+
+       <div class="hero-content">
+
+    <div class="hero-text">
+
+        <p class="tagline">
+            ✨ Beautiful Mehndi • Beautiful Memories
+        </p>
+
+        <h1>
+            Make Your Special Day
+            <span>More Beautiful</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Bridal • Wedding • Engagement • Party Mehndi
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#booking" class="book-btn">
+                📅 Book Your Mehndi
+            </a>
+
+            <a href="#gallery" class="view-btn">
+                🖼️ View Designs
+            </a>
+
+        </div>
+
+        <div class="hero-features">
+            <span>✓ Easy Booking</span>
+            <span>✓ Jamshedpur</span>
+            <span>✓ Beautiful Designs</span>
+        </div>
+
+    </div>
+
+    <div class="hero-image">
+        <img src="images/mehndi1.jpg" alt="Bridal Mehndi Design">
+    </div>
+
+</div>
+
+    </section>
+
+
+    <!-- GALLERY -->
+    <!-- ===== PREMIUM GALLERY ===== -->
+
+<section id="gallery" class="section premium-gallery">
+
+    <div class="gallery-heading">
+
+        <div class="gallery-side-text left">
+            TRADITION<br>
+            MEETS<br>
+            BEAUTY
+        </div>
+
+        <div>
+            <div class="gallery-camera">📷</div>
+
+            <h2>
+                <span>Our Mehndi</span>
+                <strong> Designs</strong>
+            </h2>
+
+            <p>
+                Beautiful designs for every special occasion
+            </p>
+
+            <div class="gallery-divider">
+                ───── ♥ ─────
+            </div>
+        </div>
+
+        <div class="gallery-side-text right">
+            <em>Art<br>on Your<br>Hands</em>
+            <br>♡
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY BUTTONS -->
+
+    <div class="gallery-controls">
+
+        <button class="gallery-filter active" data-filter="all">
+            ▦ All Designs
+        </button>
+
+        <button class="gallery-filter" data-filter="bridal">
+            ♕ Bridal
+        </button>
+
+        <button class="gallery-filter" data-filter="arabic">
+            ❧ Arabic
+        </button>
+
+        <button class="gallery-filter" data-filter="simple">
+            ✿ Simple
+        </button>
+
+        <button class="gallery-filter" data-filter="back">
+            ♡ Back Hand
+        </button>
+
+        <button class="gallery-filter" data-filter="full">
+            ♡ Full Hand
+        </button>
+
+        <button class="gallery-filter" data-filter="feet">
+            ♧ Feet Mehndi
+        </button>
+
+        <div class="gallery-search">
+            🔍
+            <input
+                type="text"
+                id="gallerySearch"
+                placeholder="Search designs..."
+            >
+        </div>
+
+    </div>
+
+
+    <!-- DESIGNS -->
+
+    <div
+        class="premium-gallery-grid"
+        id="publicGallery"
+    ></div>
+
+
+    <button
+        id="viewMoreGallery"
+        onclick="openDesignModal()"
+        class="view-more-gallery"
+        type="button"
+    >
+        🖼️ View More Designs →
+    </button>
+    <!-- DESIGN CHOICE SECTION -->
+
+<section class="design-choice-section">
+
+    <div class="design-choice-content">
+
+        <!-- LEFT SIDE -->
+        <div class="design-choice-visual">
+
+            <div class="same-design-badge">
+                🌿
+                <br>
+                <strong>Same Design</strong>
+                <br>
+                Both Hands
+                <br>
+                ❤️
+            </div>
+
+            <div class="choice-photos">
+
+                <div class="choice-photo front-photo">
+                    <img
+                        src="images/Simple mehndi 9.jpg"
+                        alt="Mehndi Front Design"
+                    >
+                    <span>Front</span>
+                </div>
+
+                <div class="choice-photo back-photo">
+                    <img
+                        src="images/Arabic mehndi 1.jpg"
+                        alt="Mehndi Back Design"
+                    >
+                    <span>Back</span>
+                </div>
+
+            </div>
+
+            <div class="left-right-note">
+                ↙
+                <strong>Left + Right</strong>
+                <br>
+                Front + Back ❤️
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="design-choice-text">
+
+            <span class="choice-tag">
+                ✨ YOUR CHOICE • YOUR STYLE ✨
+            </span>
+
+            <h2>
+                Apni Pasand Ki
+                <span>Mehndi Design</span>
+                Choose Karein
+            </h2>
+
+            <p class="choice-intro">
+                Aap apni pasand ki Mehndi design khud choose kar sakte hain.
+                Jo design category aap choose karenge,
+                usi category ki Mehndi aapko lagayi jayegi.
+            </p>
+
+
+            <div class="choice-list">
+
+                <div class="choice-item simple-choice">
+                    <div class="choice-icon">🌸</div>
+
+                    <div>
+                        <h3>Simple Mehndi</h3>
+
+<p>
+    Choose karein → Simple Mehndi dono haathon mein lagegi
+    <br>
+    <small>(Left + Right, Front + Back)</small>
+</p>
+
+</div>
+
+<span class="choice-arrow">›</span>
+</div>
+                      
+
+
+                       
+                
+        </div>
+        
+<!-- FESTIVAL OFFERS -->
+<section id="offers" class="section festival-offers">
+  <div class="packages-heading">
+    <span class="packages-tag">SPECIAL FESTIVAL DEALS</span>
+    <h2>Festival <span>Offers</span></h2>
+    <p>Celebrate every occasion with beautiful mehendi designs.</p>
+  </div>
+
+ 
+<div class="festival-offers-grid" id="festivalOffersGrid">
+  <p>Festival offers check ho rahe hain...</p>
+</div>
+
+</section>
+<!-- END FESTIVAL OFFERS -->
+
+        <!-- PACKAGES -->
+<!-- PACKAGES -->
+<section id="packages" class="packages-section">
+
+    <div class="packages-heading">
+        <span class="packages-tag">🍃 BEAUTY IN EVERY DESIGN 🍃</span>
+
+        <h2>Our <span>Packages</span></h2>
+
+        <div class="packages-line">──── 🌸 ────</div>
+
+        <p>Apne event ke according package choose karein</p>
+    </div>
+
+
+    <div class="packages">
+
+
+        <!-- 1. SIMPLE MEHNDI -->
+        <div class="package simple-package">
+
+            <div class="package-image">
+                <img
+                    src="images/Simple mehndi 1.webp"
+                    alt="Simple Mehndi"
+                >
+            </div>
+
+            <div class="package-content">
+
+                <h3>🌿 Simple Mehndi</h3>
+
+                <p class="package-subtitle">
+                    Elegant & Minimal
+                </p>
+
+              
+<div class="package-price" data-original-price="500">
+    <span class="original-price">₹500+</span>
+    <span class="discounted-price"></span>
+</div>
+
+                <ul>
+                    <li>🍂 Simple & beautiful designs</li>
+                    <li>🍂 Perfect for small functions</li>
+                    <li>🍂 Quick & neat application</li>
+                    <li>🍂 Stylish & elegant look</li>
+                </ul>
+
+                <button onclick="selectPackage('Simple Mehndi')">
+                    Select Package &nbsp; →
+                </button>
+
+            </div>
+        </div>
+
+
+        <!-- 2. ARABIC MEHNDI -->
+        <div class="package arabic-package">
+
+            <div class="package-image">
+                <img
+                    src="images/Arabic mehndi 1.jpg"
+                    alt="Arabic Mehndi"
+                >
+            </div>
+
+            <div class="package-content">
+
+                <h3>🌿 Arabic Mehndi</h3>
+
+                <p class="package-subtitle">
+                    Stylish & Modern
+                </p>
+
+                
+<div class="package-price" data-original-price="1200">
+    <span class="original-price">₹1,200+</span>
+    <span class="discounted-price"></span>
+</div>
+
+
+                <ul>
+                    <li>🌿 Stylish & beautiful Arabic designs</li>
+                    <li>🌿 Modern & trendy patterns</li>
+                    <li>🌿 Perfect for all age groups</li>
+                    <li>🌿 Looks elegant & classy</li>
+                </ul>
+
+                <button onclick="selectPackage('Arabic Mehndi')">
+                    Select Package &nbsp; →
+                </button>
+
+            </div>
+        </div>
+
+
+        <!-- 3. BRIDAL MEHNDI -->
+        <div class="package bridal-package">
+
+            <div class="popular-label">
+                👑 MOST POPULAR
+            </div>
+
+            <div class="package-image">
+                <img
+                    src="images/Bridal mehndi 5.jpg"
+                    alt="Bridal Mehndi"
+                >
+            </div>
+
+            <div class="package-content">
+
+                <h3>👰 Bridal Mehndi</h3>
+
+                <p class="package-subtitle">
+                    For Your Special Day
+                </p>
+
+                
+<div class="package-price" data-original-price="2500">
+    <span class="original-price">₹2,500+</span>
+    <span class="discounted-price"></span>
+</div>
+
+
+                <ul>
+                    <li>👑 Full bridal hand & feet design</li>
+                    <li>👑 Premium & intricate patterns</li>
+                    <li>👑 Customised as per your outfit</li>
+                    <li>👑 Long lasting & rich colour</li>
+                </ul>
+
+                <button onclick="selectPackage('Bridal Mehndi')">
+                    Select Package &nbsp; →
+                </button>
+
+            </div>
+        </div>
+
+
+        <!-- 4. WEDDING PACKAGE -->
+        <div class="package wedding-package">
+
+            <div class="package-image">
+                <img
+                    src="images/Wedding mehndi 1.jpg"
+                    alt="Wedding Mehndi"
+                >
+            </div>
+
+            <div class="package-content">
+
+                <h3>💍 Wedding Package</h3>
+
+                <p class="package-subtitle">
+                    For Family & Functions
+                </p>
+
+               
+<div class="package-price" data-original-price="5000">
+    <span class="original-price">₹5,000+</span>
+    <span class="discounted-price"></span>
+</div>
+
+                <ul>
+                    <li>💜 Bride + Family Mehndi</li>
+                    <li>💜 Custom designs for all</li>
+                    <li>💜 Suitable for all functions</li>
+                    <li>💜 Memorable & special experience</li>
+                </ul>
+
+                <button onclick="selectPackage('Wedding Package')">
+                    Select Package &nbsp; →
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- BENEFITS -->
+    <div class="package-benefits">
+
+        <div>
+            🍃
+            <span>100% Organic Mehndi</span>
+        </div>
+
+        <div>
+            ❤️
+            <span>Custom Designs</span>
+        </div>
+
+        <div>
+            ✨
+            <span>Experienced Artist</span>
+        </div>
+
+        <div>
+            🛡️
+            <span>Safe & Skin Friendly</span>
+        </div>
+
+    </div>
+
+
+    <div class="packages-bottom">
+        <span>──── 🌸 ────</span>
+
+        <button
+            type="button"
+            class="view-more-gallery"
+            id="viewMoreGallery"
+            onclick="openDesignModal()"
+        >
+            🖼️ View More Designs →
+        </button>
+    </div>
+<!-- CUSTOM DESIGN INFO -->
+<div class="custom-design-info">
+
+    <div class="custom-design-icon">✨</div>
+
+    <div class="custom-design-content">
+
+        <h3>✨ Custom Design Available</h3>
+
+        <p>
+    Aap apne selected package category ke according
+    apni pasand ka design choose kar sakte hain.
+    Gallery mein design available na ho, tab bhi
+    aap apne phone se reference design dikha sakte hain.
+</p>
+
+<p>
+    💕 <strong>Example:</strong> Agar aap
+    <strong>Simple Mehndi</strong> package choose karte hain,
+    to aap apne phone se koi bhi
+    <strong>Simple Mehndi</strong> design select karke
+    dikha sakte hain. Hum aapke diye hue design ko apply karenge.
+</p>
+
+<div class="custom-design-note">
+    ⚠️ <strong>Important:</strong><br>
+    Package category same honi chahiye.
+    Simple package ke liye Simple design,
+    Arabic ke liye Arabic,
+    Bridal ke liye Bridal aur
+    Wedding ke liye Wedding design choose karein.
+    <br><br>
+    🤲 Design <strong>Both Hands</strong> par apply hoga:
+    <strong>Front + Back • Left + Right</strong>
+</div>
+        <div class="custom-design-points">
+
+            <span>📱 Apne phone se koi bhi design dikha sakte hain</span>
+
+            <span>🎨 Aapki pasand ka custom design bhi lagwaya ja sakta hai</span>
+
+            <span>🤲 Design dono haathon par lagaya jayega</span>
+
+            <span>↔️ Front + Back • Left + Right</span>
+
+        </div>
+
+        <small>
+            Simple se lekar premium designs tak, design aapki choice ke according.
+        </small>
+
+    </div>
+
+</div>
+</section>
+
+    
+
+
+    <!-- BOOKING -->
+    <section id="booking" class="section">
+
+        <h2>📅 Book Your Mehndi</h2>
+
+        <p class="subtitle">
+            Booking ke liye apni details fill karein
+        </p>
+
+        <form id="bookingForm">
+
+            <label>Your Name</label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Apna naam likhiye"
+                required
+            >
+
+
+            <label>Mobile Number</label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Mobile number"
+                required
+            >
+
+
+            <label>Event Date</label>
+
+            <input
+                type="date"
+                id="date"
+                required
+            >
+
+
+            <label>Event Type</label>
+
+            <select id="eventType" required>
+
+                <option value="">
+                    Select Event
+                </option>
+
+                <option>Wedding</option>
+                <option>Bridal</option>
+                <option>Engagement</option>
+                <option>Birthday / Party</option>
+                <option>Other</option>
+
+            </select>
+
+
+            <label>Mehndi Package</label>
+
+            <select id="package" required>
+
+                <option value="">
+                    Select Package
+                </option>
+
+                <option>Simple Mehndi</option>
+                <option>Bridal Mehndi</option>
+                <option>Wedding Package</option>
+
+            </select>
+
+
+           <label>Event Location</label>
+
+<input
+    type="text"
+    id="location"
+    placeholder="Jamshedpur ki complete location"
+    required
+>
+
+<small>📍 Abhi sirf Jamshedpur mein booking available hai.</small>
+<label>Payment Method</label>
+
+<select id="paymentMethod" required>
+    <option value="">Select Payment Method</option>
+    <option value="cash">💵 Cash Payment</option>
+    <option value="online" disabled>💳 Online Payment (Coming Soon)</option>
+</select>
+
+            <button type="submit" class="submit-btn">
+                📲 Send Booking Request
+            </button>
+
+        </form>
+
+    </section>
+
+<!-- CHECK BOOKING STATUS -->
+<section id="booking-status" class="section">
+
+    <h2>🔎 Check Your Booking Status</h2>
+
+    <p class="subtitle">
+        Apni Booking ID aur Phone Number dalkar status check karein.
+    </p>
+
+    <input
+        type="text"
+        id="checkBookingId"
+        placeholder="Booking ID"
+        required
+    >
+
+    <input
+        type="tel"
+        id="checkBookingPhone"
+        placeholder="Phone Number"
+        required
+    >
+
+    <button
+        type="button"
+        class="submit-btn"
+        onclick="checkBookingStatus()"
+    >
+        🔎 Check Status
+    </button>
+
+    <div id="bookingStatusResult"></div>
+
+</section>
+<!-- ================= ABOUT SECTION ================= -->
+
+<section id="about" class="about-section">
+
+    <div class="about-container">
+
+        <div class="about-heading">
+            <span>✦</span>
+            <h2>About Mehndi Booking</h2>
+            <span>✦</span>
+        </div>
+
+        <p class="about-tagline">
+            Beautiful Mehndi • Personalised Designs • Memorable Moments
+        </p>
+
+        <div class="about-intro">
+
+            <h3>🌿 What is Mehndi Booking?</h3>
+
+            <p>
+                Mehndi Booking is a simple and convenient platform
+                created to make mehndi booking easier for customers
+                in <strong>Jamshedpur</strong>.
+            </p>
+
+            <p>
+                Customers can choose from different mehndi packages,
+                select their preferred design and submit a booking
+                request online.
+            </p>
+
+            <p>
+                We offer <strong>Simple, Arabic, Bridal</strong> and
+                <strong>Wedding Mehndi</strong> options. Custom designs
+                are also available according to the selected package
+                category.
+            </p>
+
+        </div>
+
+
+        <div class="about-features">
+
+            <div class="about-card">
+                <div class="about-icon">🎨</div>
+                <h4>Custom Designs</h4>
+                <p>
+                    Apne phone se apni pasand ka reference
+                    design bhi choose kar sakte hain.
+                </p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon">💅</div>
+                <h4>Multiple Packages</h4>
+                <p>
+                    Simple se lekar Bridal aur Wedding
+                    packages tak options available hain.
+                </p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon">📍</div>
+                <h4>Jamshedpur Service</h4>
+                <p>
+                    Filhaal booking service Jamshedpur
+                    location ke liye available hai.
+                </p>
+            </div>
+
+        </div>
+
+<div class="creator-box">
+
+    <div class="creator-icon">👩‍💻</div>
+
+    <div>
+        
+        <h3>👩‍💻 About the Creator</h3>
+
+<p>
+    <strong>Hi, I'm Simran Kumari, a resident of Jamshedpur.</strong>
+    I created this Mehndi Booking website to make mehndi booking
+    simple, convenient, and organised for customers in Jamshedpur.
+</p>
+
+<p>
+    <strong>Currently, I am pursuing my B.Tech.</strong>
+    Alongside my studies, I am working on this project to combine
+    creativity, design, and technology to create a practical
+    and user-friendly booking platform.
+</p>
+
+<div class="creator-hinglish">
+
+    <h4>🌸 Mere Baare Mein</h4>
+
+    <p>
+        Main <strong>Simran Kumari</strong>, Jamshedpur ki rehne wali hoon.
+        Maine ye Mehndi Booking website isliye banayi hai taaki
+        Jamshedpur ke customers ke liye mehndi booking
+        <strong>simple, convenient aur organised</strong> ho sake.
+    </p>
+
+    <p>
+        Filhaal main <strong>B.Tech ki padhai kar rahi hoon.</strong>
+        Apni studies ke saath main ye project par kaam kar rahi hoon,
+        jisme creativity, design aur technology ko ek saath use karke
+        <strong>easy aur user-friendly booking experience</strong>
+        provide karna mera goal hai.
+    </p>
+
+    <p>
+        💕 Mera aim hai ki customers easily apna package choose karein,
+        apni favourite mehndi design share karein aur apni booking ko
+        conveniently <strong>submit aur track</strong> kar saken.
+    </p>
+
+</div>
+
+
+        
+    
+<!-- BOOKING PROCESS -->
+<div class="booking-process">
+
+    <h3>📌 Booking Process</h3>
+
+    <div class="process-step">
+        <span>1</span>
+        <p>
+            Customer website par apni details, booking date, package aur event location fill karke booking request submit kar sakta hai.
+        </p>
+    </div>
+
+    <div class="process-step">
+        <span>2</span>
+        <p>
+            Booking request submit hone ke baad
+            <strong>Pending / Waiting</strong> status mein jaati hai.
+        </p>
+    </div>
+
+    <div class="process-step">
+        <span>3</span>
+        <p>
+            Admin booking ki details aur date availability check karta hai.
+        </p>
+    </div>
+
+    <div class="process-step">
+        <span>4</span>
+        <p>
+            Booking accept hone par status
+            <strong>Approved</strong> kiya jaata hai.
+        </p>
+    </div>
+
+    <div class="process-step">
+        <span>5</span>
+        <p>
+            Agar booking accept nahi ho sakti, status
+            <strong>Rejected</strong> kiya jaata hai.
+        </p>
+    </div>
+
+    <div class="process-step">
+        <span>6</span>
+        <p>
+            Customer apni <strong>Booking ID + Phone Number</strong>
+            se website par booking status check kar sakta hai.
+        </p>
+    </div>
+
+    <div class="process-step">
+        <span>7</span>
+        <p>
+            Status update hone par customer ko
+            <strong>WhatsApp</strong> ke through information di ja sakti hai.
+        </p>
+    </div>
+
+</div>
+</section>
+    <!-- REVIEWS -->
+    <section id="reviews" class="section reviews-section">
+
+        <h2>⭐ Customer Reviews</h2>
+
+        <p class="subtitle">
+            Hamare customers ka experience
+        </p>
+
+
+        <div id="reviewsContainer">
+
+            <div class="review">
+
+                <div class="stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "Beautiful Mehndi design. Very neat work!"
+                </p>
+
+                <strong>
+                    Priya
+                </strong>
+
+            </div>
+
+
+            <div class="review">
+
+                <div class="stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "Loved my bridal Mehndi. Very professional."
+                </p>
+
+                <strong>
+                    Anjali
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVIEW FORM -->
+
+        <div class="review-box">
+
+            <h3>❤️ Apna Review Dijiye</h3>
+
+            <input
+                type="text"
+                id="reviewName"
+                placeholder="Aapka naam"
+            >
+
+            <select id="rating">
+
+                <option value="5">★★★★★ 5 Stars</option>
+                <option value="4">★★★★ 4 Stars</option>
+                <option value="3">★★★ 3 Stars</option>
+                <option value="2">★★ 2 Stars</option>
+                <option value="1">★ 1 Star</option>
+
+            </select>
+
+            <textarea
+                id="reviewText"
+                placeholder="Apna review likhiye..."
+            ></textarea>
+
+            <button onclick="addReview()">
+                ⭐ Submit Review
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h3>🌿 Mehndi Booking</h3>
+
+        <p>
+            Bridal • Wedding • Engagement • Party
+        </p>
+
+        <p>
+            📞 Call / WhatsApp: 6299221773
+        </p>
+<p>
+    🆘 Help:
+    <a href="tel:YOUR_NUMBER">YOUR_NUMBER</a>
+</p>
+        <p>
+            © 2026 Mehndi Booking
+        </p>
+
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+<!-- DESIGN PHOTO POPUP -->
+
+<div id="designModal" class="design-modal">
+
+    <div class="design-modal-box">
+
+        <button
+            class="design-close"
+            onclick="closeDesignModal()"
+        >
+            ×
+        </button>
+
+        <h2>🌿 Mehndi Designs</h2>
+
+        <p>
+            Apni favourite Mehndi design choose karein
+        </p>
+<div class="design-photo-grid">
+
+    <img src="images/Bridal mehndi 5.jpg" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 6.jpg" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 7.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 8.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 9.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 10.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 11.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 12.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 13.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 14.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 15.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 16.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 17.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 18.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 19.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 20.webp" alt="Bridal Mehndi Design">
+    <img src="images/Bridal mehndi 21.jpeg" alt="Bridal Mehndi Design">
+
+</div>
+
+<!-- ARABIC MEHNDI POPUP -->
+
+
+       
+<!-- Festival Offer Notification -->
+<div id="festivalOfferNotification" style="
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  max-width:320px;
+  background:#fff7ed;
+  border:2px solid #d97706;
+  border-radius:12px;
+  padding:16px;
+  box-shadow:0 4px 15px #0002;
+  z-index:9999;
+  color:#78350f;
+  font-family:Arial,sans-serif;
+">
+  <button onclick="this.parentElement.style.display='none'"
+    style="float:right;border:0;background:none;font-size:20px;cursor:pointer">×</button>
+  <h3 style="margin:0 0 8px">🎉 Festival Special Offer!</h3>
+  <p id="festivalOfferMessage" style="margin:0"></p>
+</div>
+</body>
+</html>

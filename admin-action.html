@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Action</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff8f4;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        h2 {
+            color: #7d123f;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            text-align: left;
+            background: #fff4ed;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .approve {
+            background: #198754;
+            color: white;
+        }
+
+        .reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .message {
+            margin-top: 18px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>📋 Booking Action</h2>
+
+    <div id="bookingDetails">
+        🔄 Booking details load ho rahi hain...
+    </div>
+
+    <div class="buttons" id="actionButtons" style="display:none;">
+        <button class="approve" onclick="updateBooking('approved')">
+            ✅ Approve
+        </button>
+
+        <button class="reject" onclick="updateBooking('rejected')">
+            ❌ Reject
+        </button>
+    </div>
+
+    <div id="message" class="message"></div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://yhyzuaaxefcwvzmpbvol.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_bnKZTYBlYg5PAkwEk_PTTQ_H3b5ZF7g";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+
+   const params = new URLSearchParams(window.location.search);
+
+const bookingId =
+    params.get("booking_id") ||
+    params.get("id") ||
+    params.get("bookingId");
+
+
+let currentBooking = null;
+
+
+// ===============================
+// LOAD BOOKING
+// ===============================
+
+async function loadBooking() {
+
+    const details =
+        document.getElementById("bookingDetails");
+
+    const buttons =
+        document.getElementById("actionButtons");
+
+    if (!bookingId) {
+
+        details.innerHTML =
+            "❌ Booking ID missing.";
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("Bookings")
+            .select("*")
+            .eq("booking_id", bookingId)
+            .maybeSingle();
+
+
+    if (error || !data) {
+
+        console.error(error);
+
+        details.innerHTML =
+            "❌ Booking nahi mili.";
+
+        return;
+    }
+
+
+    currentBooking = data;
+
+
+    details.innerHTML = `
+        <strong>Name:</strong> ${data.name}<br>
+        <strong>Booking ID:</strong> ${data.booking_id}<br>
+        <strong>Phone:</strong> ${data.phone}<br>
+        <strong>Date:</strong> ${data.date}<br>
+        <strong>Event:</strong> ${data.event_type}<br>
+        <strong>Package:</strong> ${data.package}<br>
+        <strong>Location:</strong> ${data.location}<br>
+        <strong>Status:</strong> ${data.status}
+    `;
+
+
+    if (data.status === "pending") {
+
+        buttons.style.display = "flex";
+
+    } else {
+
+        document.getElementById("message").innerHTML =
+            "ℹ️ Ye booking already process ho chuki hai.";
+
+    }
+
+}
+
+
+// ===============================
+// UPDATE BOOKING
+// ===============================
+
+async function updateBooking(newStatus) {
+
+    if (!currentBooking) return;
+
+
+    const confirmAction =
+        confirm(
+            newStatus === "approved"
+                ? "Is booking ko APPROVE karna hai?"
+                : "Is booking ko REJECT karna hai?"
+        );
+
+
+    if (!confirmAction) return;
+
+
+    const { error } =
+        await supabaseClient
+            .from("Bookings")
+            .update({
+                status: newStatus
+            })
+            .eq("id", currentBooking.id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        document.getElementById("message").innerHTML =
+            "❌ Status update nahi hua.";
+
+        return;
+    }
+
+
+    document.getElementById("actionButtons").style.display =
+        "none";
+
+
+    document.getElementById("message").innerHTML =
+        newStatus === "approved"
+            ? "✅ Booking APPROVED successfully!"
+            : "❌ Booking REJECTED successfully!";
+setTimeout(() => {
+    window.location.href = "admin-dashboard.html";
+}, 2000);
+}
+
+
+loadBooking();
+
+</script>
+
+</body>
+</html>

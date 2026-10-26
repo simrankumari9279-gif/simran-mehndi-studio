@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Mehndi Booking</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8eee3;
+            color: #333;
+        }
+
+        header {
+            background: #6b3e26;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        #logoutBtn {
+            background: white;
+            color: #6b3e26;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #6b3e26;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f1dfcf;
+            color: #6b3e26;
+        }
+
+        select {
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            padding: 20px;
+        }
+        .status-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    outline: none;
+}
+
+.status-select.status-pending {
+    background: #fff3cd;
+    color: #856404;
+    border-color: #ffe08a;
+}
+
+.status-select.status-approved {
+    background: #d1fae5;
+    color: #065f46;
+    border-color: #86efac;
+}
+
+.status-select.status-confirmed {
+    background: #dbeafe;
+    color: #1e40af;
+    border-color: #93c5fd;
+}
+
+.status-select.status-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #fca5a5;
+}
+/* Mobile Booking Table */
+@media (max-width: 700px) {
+
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .card {
+        padding: 15px;
+        overflow: hidden;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    #bookingTable {
+        min-width: 950px;
+    }
+
+    #bookingTable th,
+    #bookingTable td {
+        white-space: nowrap;
+        padding: 10px 12px;
+    }
+
+    .booking-search {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #bookingSearch {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .booking-date-search {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #bookingDate {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #bookingFilter {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+/* Booking Summary Cards */
+.booking-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin: 20px 0 25px;
+}
+
+.summary-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #ead8ca;
+    box-shadow: 0 5px 18px rgba(80, 40, 20, 0.08);
+    transition: 0.25s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 24px rgba(80, 40, 20, 0.12);
+}
+.reset-filter-btn {
+    margin: 8px 0 15px 8px;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #70143b;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.reset-filter-btn:hover {
+    opacity: 0.9;
+}
+.summary-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 22px;
+}
+
+.summary-card h3 {
+    margin: 0;
+    font-size: 25px;
+    color: #4b2e20;
+}
+
+.summary-card p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #777;
+}
+
+/* Individual card backgrounds */
+.summary-card.total {
+    border-left: 5px solid #8b5e3c;
+}
+
+.summary-card.pending {
+    border-left: 5px solid #e0a800;
+}
+
+.summary-card.approved {
+    border-left: 5px solid #198754;
+}
+
+.summary-card.rejected {
+    border-left: 5px solid #dc3545;
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+    .booking-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .booking-summary {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🔐 Mehndi Booking Admin</h1>
+
+    <button id="logoutBtn">
+        Logout
+    </button>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>📋 Customer Bookings</h2>
+        <div class="booking-summary">
+
+    <div class="summary-card total" onclick="filterBySummary('all')">
+
+    <div class="summary-icon">📋</div>
+
+    <div>
+        <h3 id="totalBookings">0</h3>
+        <p>Total Bookings</p>
+    </div>
+
+</div>
+        
+
+    <div class="summary-card pending" onclick="filterBySummary('pending')">
+
+    <div class="summary-icon">🟡</div>
+
+    <div>
+        <h3 id="pendingBookings">0</h3>
+        <p>Pending</p>
+    </div>
+
+</div>
+
+    <div class="summary-card approved" onclick="filterBySummary('approved')">
+        <div class="summary-icon">🟢</div>
+        <div>
+            <h3 id="approvedBookings">0</h3>
+            <p>Approved</p>
+        </div>
+    </div>
+
+    <div class="summary-card rejected" onclick="filterBySummary('rejected')">
+        <div class="summary-icon">🔴</div>
+        <div>
+            <h3 id="rejectedBookings">0</h3>
+            <p>Rejected</p>
+        </div>
+    </div>
+
+</div>
+
+        <div id="bookingMessage" class="loading">
+            Bookings load ho rahi hain...
+        </div>
+<label for="bookingFilter">Booking Filter</label>
+<div class="booking-search">
+    <input
+        type="text"
+        id="bookingSearch"
+        placeholder="🔎 Search Booking ID, Name or Phone"
+        oninput="searchBookings()"
+    >
+    <div class="booking-date-search">
+    <label for="bookingDate">📅 Search by Date</label>
+
+    <input
+        type="date"
+        id="bookingDate"
+        onchange="filterBookings()"
+    >
+</div>
+</div>
+<select id="bookingFilter" onchange="filterBookings()">
+    <option value="all">📋 All Bookings</option>
+    <option value="pending">🟡 Pending / Waiting</option>
+    <option value="approved">🟢 Approved</option>
+    <option value="rejected">🔴 Rejected</option>
+</select>
+
+<button
+    type="button"
+    class="reset-filter-btn"
+    onclick="resetBookingFilters()"
+>
+    🔄 Reset Filters
+</button>
+        <div class="table-container">
+            <table id="bookingTable" style="display:none;">
+
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Date</th>
+                        <th>Event</th>
+                        <th>Package</th>
+                        <th>Location</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bookingTableBody"></tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+<!-- FESTIVAL OFFERS ADMIN -->
+<div class="card" id="festivalOffersAdmin">
+  <h2>🎉 Festival Offers Management</h2>
+  <p>Add festival dates and manage your 20% discount offers.</p>
+
+  
+<div class="festival-admin-form">
+  <h3>Add Festival Offer</h3>
+
+  <label for="festivalName">Festival Name</label>
+  <input type="text" id="festivalName" placeholder="e.g. Chhath Puja" required>
+  <label for="festivalSelect">Choose Festival</label>
+<select id="festivalSelect">
+  <option value="">Select Festival</option>
+
+  <optgroup label="January">
+    <option value="New Year">New Year</option>
+    <option value="Makar Sankranti">Makar Sankranti</option>
+    <option value="Saraswati Puja">Saraswati Puja</option>
+  </optgroup>
+
+  <optgroup label="February - March">
+    <option value="Mahashivratri">Mahashivratri</option>
+    <option value="Holi">Holi</option>
+    <option value="Ram Navami">Ram Navami</option>
+  </optgroup>
+
+  <optgroup label="April - May">
+    <option value="Hanuman Jayanti">Hanuman Jayanti</option>
+    <option value="Akshaya Tritiya">Akshaya Tritiya</option>
+    <option value="Vat Savitri">Vat Savitri</option>
+    <option value="Buddha Purnima">Buddha Purnima</option>
+  </optgroup>
+
+  <optgroup label="July - August">
+    <option value="Guru Purnima">Guru Purnima</option>
+    <option value="Hariyali Teej">Hariyali Teej</option>
+    <option value="Nag Panchami">Nag Panchami</option>
+    <option value="Raksha Bandhan">Raksha Bandhan</option>
+    <option value="Janmashtami">Janmashtami</option>
+  </optgroup>
+
+  <optgroup label="September">
+    <option value="Jitiya">Jitiya</option>
+    <option value="Ganesh Chaturthi">Ganesh Chaturthi</option>
+    <option value="Vishwakarma Puja">Vishwakarma Puja</option>
+  </optgroup>
+
+  <optgroup label="October - November">
+    <option value="Navratri">Navratri</option>
+    <option value="Durga Puja">Durga Puja</option>
+    <option value="Dussehra">Dussehra</option>
+    <option value="Karwa Chauth">Karwa Chauth</option>
+    <option value="Dhanteras">Dhanteras</option>
+    <option value="Diwali">Diwali</option>
+    <option value="Chhath Puja">Chhath Puja</option>
+    <option value="Bhai Dooj">Bhai Dooj</option>
+    <option value="Tulsi Vivah">Tulsi Vivah</option>
+  </optgroup>
+
+  <optgroup label="December">
+    <option value="Christmas">Christmas</option>
+  </optgroup>
+
+  <optgroup label="Custom">
+    <option value="Eid">Eid</option>
+    <option value="Wedding Season">Wedding Season</option>
+    <option value="Other">Other Festival</option>
+  </optgroup>
+</select>
+  <label for="festivalDate">Festival Date</label>
+  <input type="date" id="festivalDate" required>
+
+  <label for="offerStart">Offer Start Date</label>
+  <input type="date" id="offerStart" required>
+
+  <label for="offerEnd">Offer End Date</label>
+  <input type="date" id="offerEnd" required>
+
+  <label for="festivalDiscount">Discount (%)</label>
+  <input type="number" id="festivalDiscount" value="20" min="1" max="100" required>
+
+  <button type="button" id="addFestivalOfferBtn">
+    Add Festival Offer
+  </button>
+
+  <p id="festivalAdminMessage"></p>
+</div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Festival</th>
+          <th>Festival Date</th>
+          <th>Offer Start</th>
+          <th>Offer End</th>
+          <th>Discount</th>
+        </tr>
+      </thead>
+      <tbody id="adminFestivalOffersBody">
+        <tr>
+          <td colspan="5">Festival offers will appear here.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- END FESTIVAL OFFERS ADMIN -->
+
+</div>
+<div class="card">
+    <h2>⭐ Customer Reviews</h2>
+
+    <div id="reviewMessage" class="loading">
+        Reviews load ho rahi hain...
+    </div>
+
+    <div class="table-container">
+        <table id="reviewTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Review</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="reviewTableBody"></tbody>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <h2>📸 Gallery Management</h2>
+
+    <div style="margin-bottom:20px;">
+        <input type="file" id="galleryFile" accept="image/*">
+
+        <button
+            onclick="uploadGalleryImage()"
+            style="margin-left:10px;">
+            📤 Upload Photo
+        </button>
+    </div>
+
+    <div id="galleryMessage" class="loading">
+        Gallery load ho rahi hai...
+    </div>
+
+    <div
+        id="galleryContainer"
+        style="
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+            gap:20px;
+        ">
+    </div>
+</div>
+<script>
+alert("Dashboard JavaScript working");
+const SUPABASE_URL = "https://yhyzuaaxefcwvzmpbvol.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_bnKZTYBlYg5PAkwEk_PTTQ_H3b5ZF7g";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+// ==================== GALLERY MANAGEMENT ====================
+
+async function loadGallery() {
+
+    const message = document.getElementById("galleryMessage");
+    const container = document.getElementById("galleryContainer");
+
+    const { data, error } = await supabaseClient
+        .storage
+        .from("mehndi-images")
+        .list("", {
+            limit: 100,
+            sortBy: {
+                column: "name",
+                order: "asc"
+            }
+        });
+
+    if (error) {
+        console.error("Gallery Error:", error);
+        message.textContent = "Gallery load nahi ho paayi.";
+        return;
+    }
+
+    message.style.display = "none";
+    container.innerHTML = "";
+
+    if (!data || data.length === 0) {
+        container.innerHTML = "<p>Abhi koi photo nahi hai.</p>";
+        return;
+    }
+
+    data.forEach(file => {
+        if (file.name === ".emptyFolderPlaceholder") return;
+
+        const { data: urlData } =
+            supabaseClient
+                .storage
+                .from("mehndi-images")
+                .getPublicUrl(file.name);
+
+        const box = document.createElement("div");
+
+        box.style.border = "1px solid #ddd";
+        box.style.padding = "10px";
+        box.style.borderRadius = "10px";
+        box.style.background = "#fff";
+
+        box.innerHTML = `
+            <img
+                src="${urlData.publicUrl}"
+                style="
+                    width:100%;
+                    height:180px;
+                    object-fit:cover;
+                    border-radius:8px;
+                "
+            >
+
+            <p style="
+                margin:8px 0;
+                word-break:break-word;
+            ">
+                ${file.name}
+            </p>
+
+            <button
+                onclick="deleteGalleryImage('${file.name}')"
+                style="
+                    background:#c62828;
+                    color:white;
+                    border:none;
+                    padding:8px 12px;
+                    border-radius:6px;
+                    cursor:pointer;
+                "
+            >
+                🗑️ Delete
+            </button>
+        `;
+
+        container.appendChild(box);
+    });
+}
+
+
+// Upload photo
+// Upload photo with automatic quality enhancement
+async function uploadGalleryImage() {
+
+    const fileInput = document.getElementById("galleryFile");
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Pehle photo select kijiye.");
+        return;
+    }
+
+    try {
+
+        // Create image
+        const image = new Image();
+
+        const imageURL = URL.createObjectURL(file);
+
+        image.src = imageURL;
+
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = reject;
+        });
+
+        // Maximum output size
+        const MAX_SIZE = 2400;
+
+        let width = image.naturalWidth;
+        let height = image.naturalHeight;
+
+        // Upscale small images / resize large images
+        const ratio = Math.min(
+            MAX_SIZE / width,
+            MAX_SIZE / height
+        );
+
+        if (ratio > 1) {
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+        } else {
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+        }
+
+        // Canvas
+        const canvas = document.createElement("canvas");
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d", {
+            willReadFrequently: true
+        });
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
+        // Draw image
+        ctx.drawImage(
+            image,
+            0,
+            0,
+            width,
+            height
+        );
+
+        // Mild sharpening
+        const imageData = ctx.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+        const data = imageData.data;
+
+        const copy = new Uint8ClampedArray(data);
+
+        for (let y = 1; y < height - 1; y++) {
+
+            for (let x = 1; x < width - 1; x++) {
+
+                const index =
+                    (y * width + x) * 4;
+
+                for (let c = 0; c < 3; c++) {
+
+                    const value =
+                        copy[index + c] * 5
+                        - copy[index - 4 + c]
+                        - copy[index + 4 + c]
+                        - copy[index - width * 4 + c]
+                        - copy[index + width * 4 + c];
+
+                    data[index + c] =
+                        Math.max(
+                            0,
+                            Math.min(255, value)
+                        );
+                }
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        // Convert to high-quality WebP
+        const blob = await new Promise(resolve => {
+
+            canvas.toBlob(
+                resolve,
+                "image/webp",
+                0.92
+            );
+
+        });
+
+        if (!blob) {
+            throw new Error("Image processing failed");
+        }
+
+        // New filename
+        const originalName =
+            file.name
+                .replace(/\.[^/.]+$/, "")
+                .replace(/\s+/g, "_");
+
+        const fileName =
+            Date.now() +
+            "_" +
+            originalName +
+            ".webp";
+
+        // Upload enhanced image
+        const { error } =
+            await supabaseClient
+                .storage
+                .from("mehndi-images")
+                .upload(
+                    fileName,
+                    blob,
+                    {
+                        contentType: "image/webp",
+                        upsert: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Upload Error:",
+                error
+            );
+
+            alert(
+                "❌ Enhanced photo upload nahi ho paayi."
+            );
+
+            return;
+        }
+
+        alert(
+            "✅ Photo automatically enhanced aur upload ho gayi!"
+        );
+
+        fileInput.value = "";
+
+        loadGallery();
+
+        URL.revokeObjectURL(imageURL);
+
+    } catch (error) {
+
+        console.error(
+            "Image Enhancement Error:",
+            error
+        );
+
+        alert(
+            "❌ Photo process nahi ho paayi. Please dobara try karein."
+        );
+    }
+}
+
+// Delete photo
+async function deleteGalleryImage(fileName) {
+
+    if (!confirm("Kya aap ye photo delete karna chahte hain?")) {
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .storage
+        .from("mehndi-images")
+        .remove([fileName]);
+
+    if (error) {
+        console.error("Delete Error:", error);
+        alert("Photo delete nahi ho paayi.");
+        return;
+    }
+
+    alert("Photo delete ho gayi! ✅");
+
+    loadGallery();
+}
+
+// Check login
+async function checkLogin() {
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+        alert("Admin session nahi mili.");
+        return;
+    }
+
+    loadBookings();
+    loadReviews();
+    loadGallery();
+}
+
+
+// Load bookings
+async function loadBookings() {
+console.log("loadBookings started");
+    const message =
+        document.getElementById("bookingMessage");
+
+    const table =
+        document.getElementById("bookingTable");
+
+    const tableBody =
+        document.getElementById("bookingTableBody");
+
+    const { data, error } =
+        await supabaseClient
+            .from("Bookings")
+            .select("*")
+           .order("created_at", { ascending: false });
+
+    if (error) {
+
+        console.error(error);
+alert(JSON.stringify(error, null, 2));
+        message.className = "error";
+
+        message.textContent =
+            "❌ Bookings load nahi ho pa rahi hain.";
+
+        return;
+    }
+// Update booking summary counts
+document.getElementById("totalBookings").textContent = data.length;
+
+document.getElementById("pendingBookings").textContent =
+    data.filter(booking => booking.status === "pending").length;
+
+document.getElementById("approvedBookings").textContent =
+    data.filter(booking => booking.status === "approved").length;
+
+document.getElementById("rejectedBookings").textContent =
+    data.filter(booking => booking.status === "rejected").length;
+    message.style.display = "none";
+    table.style.display = "table";
+
+    tableBody.innerHTML = "";
+
+    if (data.length === 0) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align:center;">
+                    Abhi koi booking nahi hai.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    data.forEach(booking => {
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+        <td>${booking.booking_id}</td>
+            <td>${booking.name}</td>
+
+            <td>${booking.phone}</td>
+
+            <td style="white-space: nowrap;">${booking.date}</td>
+
+            <td>${booking.event_type}</td>
+
+            <td>${booking.package}</td>
+
+            <td>${booking.location}</td>
+<td>${booking.payment_method === "cash" ? "💵 Cash" : "💳 Online"}</td>
+            <td>
+                <select
+    class="status-select status-${booking.status}"
+    onchange="updateStatus('${booking.id}', this.value); this.className='status-select status-' + this.value"
+>
+
+                    <option value="pending"
+                        ${booking.status === "pending" ? "selected" : ""}>
+                        Pending
+                    </option>
+
+                    <option value="approved"
+                        ${booking.status === "approved" ? "selected" : ""}>
+                        Approved
+                    </option>
+                    <option value="confirmed"
+    ${booking.status === "confirmed" ? "selected" : ""}>
+    Confirmed
+</option>
+
+                    <option value="rejected"
+                        ${booking.status === "rejected" ? "selected" : ""}>
+                        Rejected
+                    </option>
+
+                </select>
+                <br><br>
+<button onclick="sendWhatsApp('${booking.phone}', '${booking.name}', '${booking.date}', '${booking.status}', '${booking.booking_id}')">
+    📲 WhatsApp
+</button>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+}
+
+
+// Update booking status
+// Update booking status
+async function updateStatus(id, status) {
+
+    // Get booking details
+    const { data: booking, error: bookingError } =
+        await supabaseClient
+            .from("Bookings")
+            .select("*")
+            .eq("id", id)
+            .single();
+
+    if (bookingError) {
+        console.error(bookingError);
+        alert("❌ Booking details nahi mil paayi.");
+        return;
+    }
+
+    // Update status
+    const { error } =
+        await supabaseClient
+            .from("Bookings")
+            .update({ status: status })
+            .eq("id", id);
+
+    if (error) {
+        console.error(error);
+        alert("❌ Status update nahi hua.");
+        return;
+    }
+
+    // Send WhatsApp message
+    sendWhatsApp(
+    booking.phone,
+    booking.name,
+    booking.date,
+    status,
+    booking.booking_id
+);
+
+    alert("✅ Booking status update ho gaya.");
+    await loadBookings();
+}
+// Send WhatsApp message
+// Send WhatsApp message
+function sendWhatsApp(phone, name, date, status, bookingId) {
+
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    const whatsappNumber =
+        cleanPhone.startsWith("91")
+            ? cleanPhone
+            : "91" + cleanPhone;
+
+    let message = "";
+
+    if (status === "confirmed") {
+
+        message =
+    "Hello " + name + ",%0A%0A" +
+    "🎉 Aapki Mehndi booking CONFIRMED hai!%0A%0A" +
+    "🆔 Booking ID: " + bookingId + "%0A" +
+    "📅 Date: " + date + "%0A%0A" +
+    "Thank you! 💚";
+    
+    } else if (status === "approved") {
+
+    message =
+        "Hello " + name + ",%0A%0A" +
+        "Your Mehndi booking has been APPROVED.%0A%0A" +
+        "Booking ID: " + bookingId + "%0A" +
+        "Event Date: " + date + "%0A%0A" +
+        "Thank you for choosing Simran Mehndi Studio.";
+    } else if (status === "rejected") {
+
+    message =
+        "Hello " + name + ",%0A%0A" +
+        "Unfortunately, your Mehndi booking has been REJECTED.%0A%0A" +
+        "Booking ID: " + bookingId + "%0A" +
+        "Please contact Simran Mehndi Studio for more information.";
+    } else {
+
+    message =
+        "Hello " + name + ",%0A%0A" +
+        "Your Mehndi booking is currently PENDING.%0A%0A" +
+        "Booking ID: " + bookingId + "%0A" +
+        "Event Date: " + date + "%0A%0A" +
+        "We will update you once your booking is confirmed.%0A%0A" +
+        "Thank you for choosing Simran Mehndi Studio.";
+}
+  const approvalLink =
+  "https://regal-marzipan-c752ec.netlify.app/admin-action.html?booking_id=" +
+  encodeURIComponent(bookingId);
+
+message += "%0A%0AApprove booking: " + approvalLink;  
+
+   
+
+const whatsappURL =
+  "https://wa.me/" +
+  whatsappNumber +
+  "?text=" +
+  encodeURIComponent(message.replaceAll("%0A", "\n"));
+
+
+
+    window.open(whatsappURL, "_blank");
+}
+// Load reviews
+async function loadReviews() {
+    console.log("loadReviews started");
+
+    const message =
+        document.getElementById("reviewMessage");
+
+    const table =
+        document.getElementById("reviewTable");
+
+    const tableBody =
+        document.getElementById("reviewTableBody");
+
+    const { data, error } =
+        await supabaseClient
+            .from("reviews")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+    if (error) {
+
+        console.error(error);
+
+        message.textContent =
+            "❌ Reviews load nahi ho pa rahi hain.";
+
+        return;
+    }
+
+    message.style.display = "none";
+    table.style.display = "table";
+
+    tableBody.innerHTML = "";
+
+    if (data.length === 0) {
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align:center;">
+                    Abhi koi review nahi hai.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    data.forEach(review => {
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${review.name}</td>
+
+            <td>
+                ${"⭐".repeat(Number(review.rating))}
+            </td>
+
+            <td>${review.text}</td>
+
+            <td>
+                ${review.approved ? "✅ Approved" : "⏳ Pending"}
+            </td>
+
+            <td>
+
+                <button
+                    onclick="updateReview(${review.id}, ${!review.approved})">
+                    ${review.approved ? "Unapprove" : "Approve"}
+                </button>
+
+                <button
+                    onclick="deleteReview(${review.id})">
+                    🗑️ Delete
+                </button>
+
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+}
+
+
+// Approve / Unapprove review
+async function updateReview(id, approved) {
+
+    const { error } =
+        await supabaseClient
+            .from("reviews")
+            .update({ approved: approved })
+            .eq("id", id);
+
+    if (error) {
+
+        console.error(error);
+
+        alert("❌ Review update nahi hua.");
+        return;
+    }
+
+    alert("✅ Review status update ho gaya.");
+
+    loadReviews();
+}
+
+
+// Delete review
+async function deleteReview(id) {
+
+    const confirmDelete =
+        confirm("Kya aap ye review delete karna chahte hain?");
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("reviews")
+            .delete()
+            .eq("id", id);
+
+    if (error) {
+
+        console.error(error);
+
+        alert("❌ Review delete nahi hua.");
+        return;
+    }
+
+    alert("🗑️ Review delete ho gaya.");
+
+    loadReviews();
+}
+// Filter bookings
+function filterBookings() {
+
+    const filter =
+        document.getElementById("bookingFilter").value;
+
+    const search =
+        document.getElementById("bookingSearch").value
+        .trim()
+        .toLowerCase();
+
+    const selectedDate =
+        document.getElementById("bookingDate").value;
+
+    const rows =
+        document.querySelectorAll("#bookingTableBody tr");
+
+    rows.forEach(row => {
+
+        const statusSelect =
+            row.querySelector("select");
+
+        if (!statusSelect) {
+            return;
+        }
+
+        const status =
+            statusSelect.value;
+
+        const rowText =
+            row.innerText.toLowerCase();
+
+        const dateCell =
+            row.querySelector("td:nth-child(4)");
+
+        const bookingDate =
+            dateCell
+                ? dateCell.innerText.trim()
+                : "";
+
+        const matchesStatus =
+            filter === "all" ||
+            status === filter;
+
+        const matchesSearch =
+            search === "" ||
+            rowText.includes(search);
+
+        const matchesDate =
+            selectedDate === "" ||
+            bookingDate === selectedDate;
+
+        if (
+            matchesStatus &&
+            matchesSearch &&
+            matchesDate
+        ) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+}
+function searchBookings() {
+    filterBookings();
+}
+function filterBySummary(status) {
+
+    document.getElementById("bookingFilter").value = status;
+
+    document.getElementById("bookingSearch").value = "";
+    document.getElementById("bookingDate").value = "";
+
+    filterBookings();
+
+    document
+        .getElementById("bookingTable")
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+}
+function resetBookingFilters() {
+
+    document.getElementById("bookingSearch").value = "";
+
+    document.getElementById("bookingDate").value = "";
+
+    document.getElementById("bookingFilter").value = "all";
+
+    filterBookings();
+}
+// Logout
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async function() {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "admin.html";
+
+    });
+
+
+async function loadAdminFestivalOffers() {
+  const tbody = document.getElementById("adminFestivalOffersBody");
+  if (!tbody) return;
+
+  const { data, error } = await supabaseClient
+    .from("festival_offers")
+    .select("*")
+    .order("festival_date", { ascending: true });
+
+  if (error) {
+    console.error("Festival load error:", error);
+    tbody.innerHTML =
+      '<tr><td colspan="5">Festival offers load nahi hue.</td></tr>';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML =
+      '<tr><td colspan="5">Abhi koi festival add nahi hai.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = data.map(festival => `
+    <tr>
+      <td>${festival.festival_name}</td>
+      <td>${festival.festival_date}</td>
+      <td>${festival.offer_start}</td>
+      <td>${festival.offer_end}</td>
+      <td>${festival.discount_percent}%</td>
+    </tr>
+  `).join("");
+}
+
+document
+  .getElementById("addFestivalOfferBtn")
+  .addEventListener("click", async function () {
+    const name = document.getElementById("festivalName").value.trim();
+    const festivalDate = document.getElementById("festivalDate").value;
+    const offerStart = document.getElementById("offerStart").value;
+    const offerEnd = document.getElementById("offerEnd").value;
+    const discount = Number(
+      document.getElementById("festivalDiscount").value
+    );
+    const message = document.getElementById("festivalAdminMessage");
+
+    if (!name || !festivalDate || !offerStart || !offerEnd) {
+      message.textContent = "Please saari details bharo.";
+      return;
+    }
+
+    if (offerStart > festivalDate || offerEnd < festivalDate ||
+        offerStart > offerEnd) {
+      message.textContent = "Festival date offer start aur end ke beech honi chahiye.";
+      return;
+    }
+
+    if (!Number.isInteger(discount) || discount < 1 || discount > 100) {
+      message.textContent = "Discount 1 se 100 ke beech rakho.";
+      return;
+    }
+
+const { data: sessionData, error: sessionError } =
+  await supabaseClient.auth.getSession();
+
+if (sessionError || !sessionData.session) {
+  message.textContent = "Admin session nahi mili. Dobara login karo.";
+  return;
+}
+
+const { data: adminRecord, error: adminError } =
+  await supabaseClient
+    .from("admin_users")
+    .select("id")
+    .eq("id", sessionData.session.user.id)
+    .maybeSingle();
+
+if (adminError || !adminRecord) {
+  message.textContent = "Ye account admin list mein verify nahi hua.";
+  return;
+}
+
+    const { error } = await supabaseClient
+      .from("festival_offers")
+      .insert([{
+        festival_name: name,
+        festival_date: festivalDate,
+        offer_start: offerStart,
+        offer_end: offerEnd,
+        discount_percent: discount,
+        price_enabled: true
+      }]);
+
+    if (error) {
+      console.error("Festival save error:", error);
+      message.textContent = "Save nahi hua. Admin permission check karni hogi.";
+      return;
+    }
+
+    message.textContent = "Festival offer successfully saved!";
+    document.getElementById("festivalName").value = "";
+    await loadAdminFestivalOffers();
+  });
+
+loadAdminFestivalOffers();
+
+checkLogin();
+
+</script>
+<script>
+const festivalSelect = document.getElementById("festivalSelect");
+
+festivalSelect.addEventListener("change", function () {
+  const festival = this.value;
+  if (!festival) return;
+
+  document.getElementById("festivalName").value = festival;
+  document.getElementById("festivalDiscount").value = 20;
+
+  const year = new Date().getFullYear();
+ const dates = {
+  "New Year": `${year}-01-01`,
+  "Makar Sankranti": `${year}-01-14`,
+  "Saraswati Puja": "",
+  "Mahashivratri": "",
+  "Holi": "",
+  "Ram Navami": "",
+  "Hanuman Jayanti": "",
+  "Akshaya Tritiya": "",
+  "Vat Savitri": "",
+  "Buddha Purnima": "",
+  "Guru Purnima": "",
+  "Hariyali Teej": "",
+  "Nag Panchami": "",
+  "Raksha Bandhan": "",
+  "Janmashtami": "",
+  "Jitiya": "",
+  "Ganesh Chaturthi": "",
+  "Vishwakarma Puja": "",
+  "Navratri": "",
+  "Durga Puja": "",
+  "Dussehra": "",
+  "Karwa Chauth": "",
+  "Dhanteras": "",
+  "Diwali": "",
+  "Chhath Puja": "",
+  "Bhai Dooj": "",
+  "Tulsi Vivah": "",
+  "Christmas": `${year}-12-25`,
+  "Ramadan": "",
+  "Eid": "",
+  "Wedding Season": "",
+  "Other": ""
+};
+
+  const festivalDate = dates[festival];
+
+  if (!festivalDate) {
+    alert("Is festival ki date manually select karein.");
+    return;
+  }
+
+  document.getElementById("festivalDate").value = festivalDate;
+
+  const date = new Date(festivalDate + "T00:00:00");
+  const start = new Date(date);
+  const end = new Date(date);
+
+  start.setDate(date.getDate() - 10);
+  end.setDate(date.getDate() + 3);
+
+  const formatDate = d =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+  document.getElementById("offerStart").value = formatDate(start);
+  document.getElementById("offerEnd").value = formatDate(end);
+});
+</script>
+</body>
+</html>
